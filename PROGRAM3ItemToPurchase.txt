@@ -1,0 +1,27 @@
+#include <iostream>
+#ifndef ITEMTOPURCHASE_H
+#define ITEMTOPURCHASE_H
+
+    class ItemToPurchase{
+        public:
+            ItemToPurchase();
+            ItemToPurchase(std::string, std::string, int, int);
+            void setName(std::string);
+            void setPrice(int);
+            void setQuantity(int);
+            void setDescription(std::string);
+            void printItemCost();
+            void printItemDescription();
+            std::string name();
+            std::string description();
+            int price();
+            int quantity();
+
+        
+        private:
+            std::string _name;
+            int _price;
+            int _quantity;
+            std::string _description;
+    };
+#endif
