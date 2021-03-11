@@ -1,0 +1,158 @@
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <cstdlib> 
+#include <stdlib.h>
+using namespace std;
+
+void readData(const string &filename, vector<double> &flightpath, vector<double> &lift);
+double interpolation(double angle, const vector<double> &flightpath, const vector<double> &lift);
+bool isOrdered(const vector<double> &nums);
+void reorder(vector<double> &v1, vector<double> &v2); 
+
+
+
+    
+
+
+
+  
+
+
+
+double interpolation(double angle, const vector<double> &flightpath, const vector<double> &lift){
+    
+         for(unsigned i = 0; i < flightpath.size(); ++i){
+        if(flightpath.at(i)==angle)
+            return lift.at(i);
+                
+                
+         }
+    
+
+    for(unsigned i = 0; i < flightpath.size()-1; ++i){
+        if(flightpath.at(i) < angle && flightpath.at(i+1)> angle){
+        double nums = lift.at(i) + ((angle - flightpath.at(i)) / (flightpath.at(i+1) - flightpath.at(i)))* (lift.at(i+1)-lift.at(i));
+            return nums;
+        }
+    }
+exit(1);
+}
+        
+        
+
+
+
+
+bool isOrdered (const vector <double> &nums){
+
+    for(unsigned int i = 0; i+1 < nums.size(); ++i){
+         if(nums.at(i) > nums.at(i+1)){
+       return false;
+        } 
+    }
+    return true;  
+}
+
+
+
+
+void reorder(vector<double> &v, vector<double> &v1){
+    double num;
+    double num1; 
+    for (unsigned i = 0; i <v.size(); ++i){
+    for (unsigned j = 0; j <= i; ++j){
+            if(v.at(i)<v.at(j)){
+                num = v.at(i);
+                num1= v1.at(i);
+                
+            
+        v.at(i)=v.at(j);
+        v1.at(i)=v1.at(j);
+                v.at(j)=num;
+                v1.at(j)=num1;
+    }
+    }
+
+    }
+}
+
+void readData(const string &filename, vector<double> &flightpath, vector<double> &lift){
+    
+    ifstream inFS;
+    inFS.open(filename);
+    
+    double lines;
+    
+    if(!inFS.is_open()){
+        cout<<"Error opening "<<filename<<endl;
+        exit(1);
+    }
+    vector<double> nums;
+    while(inFS>>lines){
+        nums.push_back(lines);
+        inFS.ignore();
+    }
+        for (unsigned int i=0; i<nums.size(); ++i){
+            if (i%2==0){
+                flightpath.push_back(nums.at(i));
+            }
+            else{
+                lift.push_back(nums.at(i));
+                
+            }
+            }
+    inFS.close();
+   // return;
+        }
+
+
+int main(int argc, char *argv[]){
+     
+string filename;
+filename=argv[1];
+   
+    
+vector<double> flightPath;
+vector<double> lift;
+double reply;
+  
+   
+    cin>>reply;
+readData(filename, flightPath, lift);
+
+
+    
+     string angle;
+        cin>>reply;
+        
+        if(isOrdered(flightPath) == true){
+            cout<< interpolation(reply, flightPath, lift)<< endl;
+        }
+        else{
+             reorder(flightPath, lift);
+            cout<< interpolation(reply, flightPath, lift)<<endl;
+        }
+    while(angle == "no" ){
+        cin>>angle;
+    if (angle == "yes" ){
+        cin>>reply;
+           if(isOrdered(flightPath)==true){
+               cout<<interpolation(reply, flightPath, lift)<<endl;
+           }
+        else{
+           reorder(flightPath, lift);
+            cout<<interpolation(reply, flightPath, lift)<<endl;
+        }
+    }
+    }
+   
+}
+
+
+       
+
